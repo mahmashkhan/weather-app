@@ -3,39 +3,27 @@ import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import InputComponent from './SearchBar';
+import '../components/WeatherCards.css';
+import CloudIcon from '@mui/icons-material/Cloud';
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import Brightness6Icon from '@mui/icons-material/Brightness6';
+import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
 
 export default function WeatherCards() {
     const [weatherData, setWeatherData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [inputValue, setInputValue] = useState('');
+    const [submittedValue, setSubmittedValue] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
-    
+
     useEffect(() => {
+        if (!submittedValue) return;
 
-        const SearchExample = () => {
-            const [query, setQuery] = useState('');          
-            const handleSearch = (event) => {
-              const value = event.target.value;
-              setQuery(value);
-        
-          
-              setFilteredData(filteredResults);
-            };
-          
-            return (
-              <div>
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={query}
-                  onChange={handleSearch}
-                /></div>
-            )
-        }
+        setLoading(true);
+        setError(false);
 
-        // ----------------------------------
-        const apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${value}?unitGroup=metric&key=9473YWA7395BR843UM9T8XU7H&contentType=json`;
-        
+        const apiUrl = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${submittedValue}?unitGroup=metric&key=9473YWA7395BR843UM9T8XU7H&contentType=json`;
+
         axios.get(apiUrl)
             .then(response => {
                 setWeatherData(response.data);
@@ -46,31 +34,56 @@ export default function WeatherCards() {
                 setError(true);
                 setLoading(false);
             });
-    }, []);
+    }, [submittedValue]);
 
-    if (loading) {
-        return <p>Loading...</p>;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setSubmittedValue(inputValue);
+    };
+    function showIcon() {
+        if (weatherData.currentConditions.conditions.includes('Clear')) {
+            return <WbSunnyIcon style={{ marginLeft: '200px', fontSize: '70', color: 'yellow' }} />
+        }
+        else if (weatherData.currentConditions.conditions.includes('Rain')) {
+            return <ThunderstormIcon style={{ marginLeft: '200px', fontSize: '70' }} />
+        }
+        else if (weatherData.currentConditions.conditions.includes('Partially cloudy')) {
+            return <Brightness6Icon style={{ marginLeft: '200px', fontSize: '70' }} />
+        }
+        else if (weatherData.currentConditions.conditions.includes('Cloudy')) {
+            return <CloudIcon style={{ marginLeft: '200px', fontSize: '70' }} />
+        }
     }
 
-    if (error || !weatherData) {
-        return <p>Error loading data</p>;
-    }
-
-    const { address, currentConditions } = weatherData;
-    const { temp, conditions } = currentConditions;
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
-            <Card style={{ width: '18rem' }}>
-                <Card.Body>
-                    <Card.Title>{address}</Card.Title>
-                    <Card.Text>
-                        Temperature: {temp}°C<br />
-                        Conditions: {conditions}
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
+        <div>
+            <form className='form' onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder="Enter city name"
+                />
+                <Button variant="primary" type="submit" style={{ marginLeft: '5px' }}>Submit</Button>
+            </form>
+
+            {loading && <p>Loading...</p>}
+            {error && <p>Error loading data</p>}
+            {weatherData && (
+                <div className='cards' style={{ borderRadius: '40px' }}>
+                    <Card >
+                        <Card.Body className='card-body'>
+                            <Card.Title className='card-title'>{weatherData.address}</Card.Title>
+                            <Card.Text className='card-text'>
+                                Temperature: {weatherData.currentConditions.temp}°C<br />
+                                Conditions: {weatherData.currentConditions.conditions}<br /><br />
+                                {showIcon()}
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </div>
+            )}
         </div>
-    );
+    )
 }

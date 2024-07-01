@@ -4,8 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
-import WeatherCards from './WeatherCards'
-import SearchBar from './SearchBar';
+import WeatherCards from './WeatherCards';
 
 export default function header() {
     return (<>
@@ -29,7 +28,6 @@ export default function header() {
                 </Toolbar>
             </AppBar>
         </Box>
-        <SearchBar/>
         <WeatherCards/>
         </>
     )
