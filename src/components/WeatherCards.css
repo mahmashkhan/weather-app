@@ -1,59 +1,28 @@
+body {
+  background-image: url('./bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.cards {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  border-radius: 1px;
+}
 
-.cards{
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
-    
-    
-  }
-  
-  .card-body {
-    width: 18rem;
-    background-color:rgb(141, 141, 141);
-    height: 200px;
-    
-    
-    
-  }
-  .card-title{
-    color:whitesmoke
-    
-  }
-  .card-text{
-    color:white
-  }
-  .form{
-    justify-content: center;
-    display: flex;
-    margin-top: 30px;
-  }
-
-  /* //////////////////////////////////// */
-  .cloud{ 
-    margin-top:70px;
-    width:150px;
-    height:80px;
-    background:#ECEFF1;
-    box-shadow: 10px 10px rgba(0,0,0,0.2);
-    border-radius:100px;
- }
- .cloud::after, .cloud::before{
-     content:"";
-     position:relative;
-     display:inline-block;
-     background:inherit;
-     border-radius:inherit;
- }
- .cloud::after{
-     width:100px;
-     height:100px;
-     top:-220px;
-     left:50px;
- }
- .cloud::before{
-     width:180px;
-     height:180px;
-     top: -70px;
-     left:130px;
-     box-shadow: 10px 10px rgba(0,0,0,0.2);
- }
+.card-title {
+  color: rgb(255, 255, 255);
+  justify-content: center;
+  display: flex;
+}
+.card-text {
+  color: rgb(255, 255, 255);
+  justify-content: center;
+  display: flex;
+}
+.form {
+  justify-content: center;
+  display: flex;
+  margin-top: 30px;
+}

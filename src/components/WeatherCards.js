@@ -40,24 +40,24 @@ export default function WeatherCards() {
         e.preventDefault();
         setSubmittedValue(inputValue);
     };
-    function showIcon() {
-        if (weatherData.currentConditions.conditions.includes('Clear')) {
-            return <WbSunnyIcon style={{ marginLeft: '200px', fontSize: '70', color: 'yellow' }} />
-        }
-        else if (weatherData.currentConditions.conditions.includes('Rain')) {
-            return <ThunderstormIcon style={{ marginLeft: '200px', fontSize: '70' }} />
-        }
-        else if (weatherData.currentConditions.conditions.includes('Partially cloudy')) {
-            return <Brightness6Icon style={{ marginLeft: '200px', fontSize: '70' }} />
-        }
-        else if (weatherData.currentConditions.conditions.includes('Cloudy')) {
-            return <CloudIcon style={{ marginLeft: '200px', fontSize: '70' }} />
-        }
-    }
 
+    const showIcon = () => {
+        if (weatherData.currentConditions.conditions.includes('Clear')) {
+            return <WbSunnyIcon  style={{fontSize:'70',color:'yellow'}}/>;
+        }
+        if (weatherData.currentConditions.conditions.includes('Rain')) {
+            return <ThunderstormIcon  style={{fontSize:'70'}}/>;
+        }
+        if (weatherData.currentConditions.conditions.includes('Partially cloudy')) {
+            return <Brightness6Icon  style={{fontSize:'70'}}/>;
+        }
+        if (weatherData.currentConditions.conditions.includes('Cloudy')) {
+            return <CloudIcon style={{fontSize:'70'}} />;
+        }
+    };
 
     return (
-        <div>
+        <div className='weather-background'>
             <form className='form' onSubmit={handleSubmit}>
                 <input
                     type="text"
@@ -71,19 +71,18 @@ export default function WeatherCards() {
             {loading && <p>Loading...</p>}
             {error && <p>Error loading data</p>}
             {weatherData && (
-                <div className='cards' style={{ borderRadius: '40px' }}>
-                    <Card >
-                        <Card.Body className='card-body'>
-                            <Card.Title className='card-title'>{weatherData.address}</Card.Title>
-                            <Card.Text className='card-text'>
-                                Temperature: {weatherData.currentConditions.temp}°C<br />
-                                Conditions: {weatherData.currentConditions.conditions}<br /><br />
-                                {showIcon()}
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                <div className='cards' style={{ borderRadius: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <h1>{weatherData.address}</h1>
+                    <br />
+                    <h5>Temperature: {weatherData.currentConditions.temp}°C</h5>
+                    <h5>Conditions: {weatherData.currentConditions.conditions}</h5>
+                    <h5>Feels Like:{weatherData.currentConditions.feelslike}</h5>
+                    <h5>Humidity:{weatherData.currentConditions.humidity}</h5>
+                    {showIcon()}
                 </div>
+
+
             )}
         </div>
-    )
+    );
 }
